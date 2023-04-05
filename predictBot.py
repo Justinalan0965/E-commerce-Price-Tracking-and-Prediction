@@ -37,23 +37,17 @@ async def Trackcmd(message: types.Message):
 
 @db.message_handler(regexp = re.compile('(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?'))
 async def ecommerce(message: types.Message):
-    await message.answer("This product is from flipkart")  
+    await message.answer("*YaY!! Product Found*",parse_mode='Markdown')  
     url = message.text
-    product_title,product_price,ratings = scrap(url)
-
-    await message.answer("The product name is \n\n"+ product_title +"\n\nThe current price is\n\n"+ product_price+"\n\nRatings: "+ratings+"⭐")
-    await message.answer(reply_markup = inline1)
+    product_title,product_price,ratings,availability = scrap(url)
+    l = len(ratings)
+    await message.answer("*Product name*  \n\n"+ product_title +"\n\n*Current price* - "+ product_price+"\n\n*Ratings*:     "+ratings[:l-6]+"⭐"+"\n\n*Availability*:   "+availability,reply_markup=inline1,parse_mode='Markdown')
+    
 
 @db.message_handler(commands=['help'])
 async def helpcmd(message: types.Message):
     await message.reply("Commands that are allowed:\n /predict => To predict the future price of the product\n/Track => to track the product and update you when the price changes\n/inline => for testing the inline buttons")
-
-
-@db.message_handler(commands=['inline'])
-async def inlineKeyboard(message: types.Message):
-    await message.answer("Select any of the file format you want",reply_markup=inline1)
-
-
+    await message.answer("*This is a bold text*",parse_mode='Markdown')
     
 
 @db.callback_query_handler(text = ['1','2'])
@@ -61,7 +55,8 @@ async def callbackmethod(call: types.Message):
     if call.data == '1':
         await call.message.answer("we started tracking your product")
     if call.data == '2':
-        await call.message.answer("You clicked the 2nd Button!!")  
+        await call.message.answer("Analysing the previous prices!!")  
+        await call.message_auto_delete_timer_changed()
 
 
 @db.message_handler()
@@ -70,7 +65,7 @@ async def send_answer(message: types.Message):
    if your_variable == "hey":
         await message.reply("Cool!")
    else:
-      await message.answer("Hmm I wonder why you typed "+your_variable)
+      await message.answer("*Hmm... \n\nI wonder why did you sent me * "+your_variable,parse_mode='Markdown')
 
 if __name__ == '__main__':
     executor.start_polling(db, skip_updates=True)
