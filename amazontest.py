@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import random
 
 # Function to extract Product Title
 def get_title(soup):
@@ -57,14 +58,20 @@ def get_price(soup):
  return price
 
 
-def scrap(link):
+def scrap_amzn(link):
 
- HEADERS = ({'User-Agent':
-             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
-             'Accept-Language': 'en-US, en;q=0.5'})
+ header_list = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/103.0.5060.66 Safari/537.36",
 
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0",
+
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393"]
+
+
+ user_agent = random.choice(header_list)
+ header = {"User-Agent": user_agent}
+ webpage = requests.get(link, headers=header, stream=True)
  # HTTP Request 
- webpage = requests.get(link,headers=HEADERS)
+#  webpage = requests.get(link,headers=user_agent)
  
  # Soup Object containing all data
  soup = BeautifulSoup(webpage.content, "lxml")
@@ -80,4 +87,4 @@ def scrap(link):
 
 # link = input("Paste your URL ")
 
-# scrap(link)
+# scrap_amzn(link)
