@@ -3,28 +3,40 @@ import csv
 
 testcsv = "E-commerce-Price-Tracking-and-Prediction\\test.csv"
 
+def untracking(ids):
+    lines = list()
 
-lines = list()
+    members= str(ids)
+    #input("Enter the ID: ")
+    #input("Please enter a member's name to be deleted.")
+    print("\n")
+    print(members)
+    print("\n")
+    print(type(members))
 
-members= input("Please enter a member's name to be deleted.")
+    with open(testcsv, 'r') as readFile:
 
-with open(testcsv, 'r') as readFile:
+        reader = csv.reader(readFile)
 
-    reader = csv.reader(readFile)
+        for row in reader:
 
-    for row in reader:
+            lines.append(row)
 
-        lines.append(row)
 
-        for field in row:
+            for field in row:
 
-            if field == members:
+                if field == members:
 
-                lines.remove(row)
-                lines = [x for x in lines if x != []]
+                    print("match found")
 
-with open(testcsv, 'w',newline="") as writeFile:
+                    lines.remove(row)
+                    lines = [x for x in lines if x != []]
 
-    writer = csv.writer(writeFile)
 
-    writer.writerows(lines)
+    with open(testcsv, 'w',newline="") as writeFile:
+
+        writer = csv.writer(writeFile)
+
+        writer.writerows(lines)
+
+untracking(6)

@@ -7,10 +7,12 @@ datas = {}
 
 data_csv = 'E-commerce-Price-Tracking-and-Prediction\product_data.csv'
 
+ID = 0
 
 def flip(url):
-
+    global ID
     url = url
+    ID+=1
 
     sauce = urllib.request.urlopen(url).read()
     soup = bs4.BeautifulSoup(sauce,"html.parser")
@@ -21,8 +23,9 @@ def flip(url):
     print(x)
     print("\n"+y)
 
-    datas.update({'URL':url})
+    datas.update({'productID':ID})
     datas.update({'product':x})
+    datas.update({'URL':url})
     datas.update({'price':float(y)})
     
     print(datas)
@@ -41,7 +44,7 @@ def flip(url):
             
 
 
-def list():
+def flip_list():
 
     with open(data_csv) as csvfile:
         reader = csv.DictReader(csvfile)
@@ -53,8 +56,58 @@ def list():
             product_url.append(row['URL'])
             product_name.append(row['product'])
             product_price.append(row['price'])
-
+        
         return product_name,product_price,product_url
+    
+def untrackF(ID):
+
+    lines = list()
+
+    members= str(ID)
+    #input("Please enter a member's name to be deleted.")
+    print("\n")
+    print(members)
+    print("\n")
+    print(type(members))
+
+    with open(data_csv, 'r') as readFile:
+
+        reader = csv.reader(readFile)
+
+        for row in reader:
+
+            lines.append(row)
+
+            for field in row:
+                
+                if field == members:
+
+                    print("match found")
+
+                    lines.remove(row)
+                    lines = [x for x in lines if x != []]
+
+
+    with open(data_csv, 'w',newline="") as writeFile:
+
+        writer = csv.writer(writeFile)
+
+        writer.writerows(lines)
+    #updating the productID
+    df = pd.read_csv(data_csv)
+
+    print(len(df))
+    # updating the column value/data
+    for i in range(1,len(df)+1):
+        n = int(i)
+        print(n)
+        df.loc[i-1, 'productID'] = n
+
+    # writing into the file
+    df.to_csv(data_csv, index=False)
+
+    print(df)
+
     
 def trackprice(url,count):
 
@@ -103,11 +156,6 @@ def realTracker():
             print(string,difference)
 
 
-
-
-
-
-
 def clear(product_data):
     file1 = open(product_data,'w+')
     file1.close()
@@ -123,8 +171,7 @@ def clear(product_data):
 
 #flip(url)
 
-# realTracker()
+#realTracker()
 
-
-# list()
+#flip_list()
 

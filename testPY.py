@@ -1,44 +1,92 @@
-import bs4
-import urllib.request
+# def IDCount(ID):
+#     return ID+1
 
-#.replace(",","").replace("₹","")
+# def jip():
+#     ID = 0
 
-def flipkart_details(url):
-
-    sauce = urllib.request.urlopen(url).read()
-    soup = bs4.BeautifulSoup(sauce,"html.parser")
-
-    name = soup.find('span',class_="B_NuCI").text
-    price = soup.find('div',class_="_30jeq3 _16Jk6d").text
-    # availabile = soup.find('div',class_="_1dVbu9").string
-    ratings = soup.find('div',class_="_2d4LTz").text + " out of 5"
-
-    print(name,price,ratings)
+#     ID = IDCount(ID)
+#     print(ID)
+# for i in range(5):
+#     jip()
 
 
-def amazon_details(url):
-
-    sauce = urllib.request.urlopen(url).read()
-    soup = bs4.BeautifulSoup(sauce,"html.parser")
-
-    title = soup.find("span", attrs={"id":'productTitle'})
-    title_value = title.string
-    name = title_value.strip()
-
-    available = soup.find("div", attrs={'id':'availability'})
-    available = available.find("span").string.strip()
-
-    rating = rating = soup.find("span", attrs={'class':'a-icon-alt'}).string.strip()
-
-    price = soup.find("span", attrs={'class':'a-offscreen'}).string.strip()
-		
-    return name,price,rating,available
+# index = 0
+# def func():
+#     global index
+#     index+=1
+# for i in range(5):
+#     func()
+#     print(index)
 
 
+# import pandas as pd
+# import bs4
+# import csv
+# import urllib.request
 
-# url = input("Enter your URl: ")
+# datas={}
+data_csv = "E-commerce-Price-Tracking-and-Prediction\\test.csv"
+# ID = 0
 
-# flipkart_details(url)
+# def flip(url):
+#     global ID
+
+#     url = url
+#     ID+=1
+#     print(ID)
+
+#     sauce = urllib.request.urlopen(url).read()
+#     soup = bs4.BeautifulSoup(sauce,"html.parser")
+
+#     x = soup.find('span',class_="B_NuCI").text
+#     y = soup.find('div',class_="_30jeq3 _16Jk6d").text.replace(",","").replace("₹","")
+
+#     print(x)
+#     print("\n"+y)
+
+#     datas.update({'productID':ID})
+#     datas.update({'product':x})
+#     datas.update({'URL':url})
+#     datas.update({'price':float(y)})
+    
+#     print(datas)
+
+#     #storing data into the csv file
+#     df = pd.DataFrame([datas])
+#     print(df)
+    
+#     with open(data_csv,'r') as csvfile:
+#         csv_dict = [row for row in csv.DictReader(csvfile)]
+#         if len(csv_dict) == 0:
+#             print("The file is empty")
+#             df.to_csv(data_csv,index=False)
+#         else:
+#             print("The file is not empty")
+#             df.to_csv(data_csv,mode='a',index=False,header=False)
 
 
 
+# for i in range(5):
+#     url = input("Paste the link here: ")
+#     flip(url)
+#     print("added to the csv") 
+
+
+
+# importing the pandas library
+# import pandas as pd
+
+# # reading the csv file
+# df = pd.read_csv(data_csv)
+
+# print(len(df))
+# # updating the column value/data
+# for i in range(1,len(df)+1):
+#     n = int(i)
+#     print(n)
+#     df.loc[i-1, 'productID'] = n
+
+# # writing into the file
+# df.to_csv(data_csv, index=False)
+
+# print(df)

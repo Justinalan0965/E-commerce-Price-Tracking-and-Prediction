@@ -57,11 +57,16 @@ def list():
         return product_name,product_price,product_url
             
 
-def untrack():
-    
+def untrackA(ID):
+
     lines = list()
 
-    members = 0
+    members= str(ID)
+    #input("Please enter a member's name to be deleted.")
+    print("\n")
+    print(members)
+    print("\n")
+    print(type(members))
 
     with open(data_csv, 'r') as readFile:
 
@@ -72,17 +77,34 @@ def untrack():
             lines.append(row)
 
             for field in row:
-
+                
                 if field == members:
+
+                    print("match found")
 
                     lines.remove(row)
                     lines = [x for x in lines if x != []]
+
 
     with open(data_csv, 'w',newline="") as writeFile:
 
         writer = csv.writer(writeFile)
 
         writer.writerows(lines)
+    #updating the productID
+    df = pd.read_csv(data_csv)
+
+    print(len(df))
+    # updating the column value/data
+    for i in range(1,len(df)+1):
+        n = int(i)
+        print(n)
+        df.loc[i-1, 'productID'] = n
+
+    # writing into the file
+    df.to_csv(data_csv, index=False)
+
+    print(df)
 
 
 def trackprice(url,count):

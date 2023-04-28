@@ -23,6 +23,8 @@ inline1 = InlineKeyboardMarkup().add(inlinebutton1).add(inlinebutton2)
 
 new_link = ""
 match = ""
+list_size = 0
+
 
 def websitel(url):
 
@@ -72,12 +74,12 @@ async def ecommerce(message: types.Message):
     
     matchFound,Thelink = websitel(url)
 
-    print(Thelink)
-    print(matchFound)
+    # print(Thelink)
+    # print(matchFound)
 
-    print("the global values are changed\n")
-    print(match)
-    print(new_link)
+    # print("the global values are changed\n")
+    # print(match)
+    # print(new_link)
 
     if matchFound == "amzn":
         product_title,product_price,ratings,availability = scrap_amzn(Thelink)
@@ -92,30 +94,66 @@ async def ecommerce(message: types.Message):
     else:
         await message.answer("*Please! Send proper link*",parse_mode='Markdown')
     
-@db.message_handler(commands=['untarack'])
+@db.message_handler(commands=['untrackF'])
 async def untrackcmd(message: types.Message):
     await message.reply("Okay,I will not track this product anymore")
-    sno = message.text
-    print(sno)
+    sno = message.text[-1:]
+    
+    try:
+        
+        print("Enetered the try block")
+        new_n = int(sno)
+        if new_n <= list_size:
+            print("Entered the second if block")
+            untrackF(new_n)
+        else:
+            print("Invalid Sno")
+            print("enter the Sno after the command eg:(/untrackF 2)")
+
+    except ValueError:
+        print("Invalid Sno")
+        print("enter the sno after the command eg:(/untrackF 2)")
+
+
+@db.message_handler(commands=['untrackA'])
+async def untrackcmd(message: types.Message):
+    await message.reply("Okay,I will not track this product anymore")
+    sno = message.text[-1:]
+    
+    try:
+        
+        print("Enetered the try block")
+        new_n = int(sno)
+        if new_n <= list_size:
+            print("Entered the second if block")
+            untrackA(new_n)
+        else:
+            print("Invalid Sno")
+            print("enter the Sno after the command eg:(/untrackA 2)")
+
+    except ValueError:
+        print("Invalid Sno")
+        print("enter the sno after the command eg:(/untrackA 2)")
+
+
     
 
 
 @db.message_handler(commands=['help'])
 async def helpcmd(message: types.Message):
-    await message.reply("Commands that are allowed:\n /predict => To predict the future price of the product\n/Track => to track the product and update you when the price changes\n/inline => for testing the inline buttons")
-    await message.answer("*This is a bold text*",parse_mode='Markdown')
+    await message.reply("Commands that are allowed:\n\n /fliplist => shows the list of flipkart products that are being tracked \n\n /amznlist => shows the list of amazon products that are being tracked \n\n /predict => To predict the future price of the product \n\n /Track => to track the product and update you when the price changes \n\n/help => you get this message \n\n/untrackF => to untrack the products.eg:(untrackF 2) \n\n/untrackA => to untrack the Amazon products.eg:(untrackA 2)")
 
 
-@db.message_handler(commands=['list'])
+
+@db.message_handler(commands=['flip_list'])
 async def listcmd(message: types.Message):
-    link = '"https://www.google.com/"' 
-    parseit = "<a href ="+link+">Google</a>"
-    print(parseit)
-    await message.answer(parseit,parse_mode='HTML')    
+    global list_size
     prefix = """'"""
     suffix = """'"""
     msgString = ""
-    name,price,url = list()
+    name,price,url = flip_list()
+    list_size = len(name)
+
     for i in range(len(name)):
         sno = i+1
         Pname = name[i]
@@ -126,7 +164,28 @@ async def listcmd(message: types.Message):
         msgString += "\n\n"+"<b>"+str(sno)+") "+Pname+"</b>"+"\n\n"+"<b>"+"Product Price: "+Pprice+"</b>"+"\n\n<a href="+realLink+">Open In</a>"
         
     print(msgString)
-    await message.answer("<b>Here is the list I'm tracking for you!!</b>"+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖"+msgString+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖",parse_mode='HTML')
+    await message.answer("<b>Here is the list of products I'm tracking for you!!</b>"+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖"+msgString+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖",parse_mode='HTML')
+
+
+@db.message_handler(commands=['amzn_list'])
+async def listcmd(message: types.Message):
+    
+    prefix = """'"""
+    suffix = """'"""
+    msgString = ""
+    name,price,url = list()
+    
+    for i in range(len(name)):
+        sno = i+1
+        Pname = name[i]
+        Pprice = price[i]
+        Plink = url[i]
+        realLink = prefix+Plink+suffix
+        print(realLink)
+        msgString += "\n\n"+"<b>"+str(sno)+") "+Pname+"</b>"+"\n\n"+"<b>"+"Product Price: "+Pprice+"</b>"+"\n\n<a href="+realLink+">Open In</a>"
+        
+    print(msgString)
+    await message.answer("<b>Here is the list of products I'm tracking for you!!</b>"+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖"+msgString+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖",parse_mode='HTML')
 
 
 
@@ -141,11 +200,11 @@ async def callbackmethod(call: types.Message):
             flip(new_link)
             await call.message.answer("<i>I have started tracking price of this product. You can sit back and relax!! I will send you alert when the price of this product drops!!</i>",parse_mode='HTML')
         
-        await call.message.answer("*To see the list of products we've been tracking for you. \n Click* /list",parse_mode='Markdown')
+        await call.message.answer("*To see the list of products we've been tracking for you. \n Click* \n /flip_list for flipkart products \n\n /amzn_list for Amazon products ",parse_mode='Markdown')
        
     if call.data == '2':
         await call.message.answer("Analysing the previous prices!!")  
-        await call.message_auto_delete_timer_changed()
+        
 
 
 @db.message_handler()
