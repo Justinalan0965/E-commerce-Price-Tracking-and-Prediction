@@ -5,13 +5,15 @@ import urllib.request
 
 datas = {}
 
-data_csv = 'E-commerce-Price-Tracking-and-Prediction\\amazon_data.csv'
+data_csv = 'amazon_data.csv'
 
-size = 0
+ID = 0
 
 def amazon(url):
 
+    global ID
     url = url
+    ID+=1
 
     sauce = urllib.request.urlopen(url).read()
     soup = bs4.BeautifulSoup(sauce,"html.parser")
@@ -22,8 +24,9 @@ def amazon(url):
     print(x)
     print("\n"+y)
 
-    datas.update({'URL':url})
+    datas.update({'productID':ID})
     datas.update({'product':x})
+    datas.update({'URL':url})
     datas.update({'price':float(y)})
     
     print(datas)
@@ -55,14 +58,15 @@ def list():
             product_price.append(row['price'])
 
         return product_name,product_price,product_url
+        #print(product_name,product_price,product_url)
             
 
 def untrackA(ID):
 
-    lines = list()
+    lists = []
 
     members= str(ID)
-    #input("Please enter a member's name to be deleted.")
+    #members = input("Please enter a member's name to be deleted.")
     print("\n")
     print(members)
     print("\n")
@@ -74,23 +78,24 @@ def untrackA(ID):
 
         for row in reader:
 
-            lines.append(row)
+            lists.append(row)
 
             for field in row:
-                
+                print(field)
+                print(type(field))
                 if field == members:
 
                     print("match found")
 
-                    lines.remove(row)
-                    lines = [x for x in lines if x != []]
+                    lists.remove(row)
+                    lists = [x for x in lists if x != []]
 
 
     with open(data_csv, 'w',newline="") as writeFile:
 
         writer = csv.writer(writeFile)
 
-        writer.writerows(lines)
+        writer.writerows(lists)
     #updating the productID
     df = pd.read_csv(data_csv)
 
@@ -106,7 +111,6 @@ def untrackA(ID):
 
     print(df)
 
-
 def trackprice(url,count):
 
     sauce = urllib.request.urlopen(url).read()
@@ -117,7 +121,7 @@ def trackprice(url,count):
 
     print(current_price)
 
-    ddf = pd.read_csv('E-commerce-Price-Tracking-and-Prediction\\amazon_data.csv')
+    ddf = pd.read_csv('amazon_data.csv')
     
     if count < len(ddf):
         stored_price = ddf['price'].iloc[count]
@@ -152,11 +156,6 @@ def realTracker():
             print(string,difference)
 
 
-
-
-
-
-
 def clear(product_data):
     file1 = open(product_data,'w+')
     file1.close()
@@ -165,15 +164,15 @@ def clear(product_data):
 
 
 #clear(data_csv)
-
-# url = input("Paste your URL: ")
-
-# datas.update({'URL':url})
-
-# amazon(url)
+# for i in range(10):
+#     url = input("Paste your URL: ")
+#     amazon(url)
 
 # realTracker()
 
-# list()
+#list()
+
+
+#untrackA()
 
 

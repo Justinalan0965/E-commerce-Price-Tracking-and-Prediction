@@ -1,42 +1,48 @@
-
 import csv
+import re
 
-testcsv = "E-commerce-Price-Tracking-and-Prediction\\test.csv"
+testcsv = "testing.csv"
 
-def untracking(ids):
+def getFilename2(ids):
     lines = list()
 
     members= str(ids)
-    #input("Enter the ID: ")
-    #input("Please enter a member's name to be deleted.")
-    print("\n")
-    print(members)
-    print("\n")
-    print(type(members))
-
     with open(testcsv, 'r') as readFile:
 
         reader = csv.reader(readFile)
 
         for row in reader:
-
             lines.append(row)
-
-
             for field in row:
-
                 if field == members:
-
                     print("match found")
+                    print(row[1])
+                    return(row[1])
+                
+def identify_website(url):
+  
+    amazon_regex = r"^(https?://)?(www\.)?amazon\.[a-z]{2,3}(/\S*)?$"
+    flipkart_regex = r"^(https?://)?(www\.)?flipkart\.com(/\S*)?$"
 
-                    lines.remove(row)
-                    lines = [x for x in lines if x != []]
+    if re.match(amazon_regex, url):
+        return "Amazon"
+    elif re.match(flipkart_regex, url):
+        return "Flipkart"
+    else:
+        print("Unknown")
 
 
-    with open(testcsv, 'w',newline="") as writeFile:
+def getFilename(url):
 
-        writer = csv.writer(writeFile)
+    if identify_website(url) == "Flipkart":   
+            pid = url.split("pid=")[1].split("&")[0]
 
-        writer.writerows(lines)
+    elif identify_website(url) == "Amazon":
+            asin_regex = r"/dp/([A-Z0-9]{10})"
+            match = re.search(asin_regex, url)
+            pid = match.group(1)
 
-untracking(6)
+
+    file_name = getFilename2(pid)
+
+    return file_name

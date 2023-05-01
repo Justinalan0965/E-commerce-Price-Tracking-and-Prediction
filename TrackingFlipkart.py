@@ -5,7 +5,7 @@ import urllib.request
 
 datas = {}
 
-data_csv = 'E-commerce-Price-Tracking-and-Prediction\product_data.csv'
+data_csv = 'product_data.csv'
 
 ID = 0
 
@@ -64,7 +64,7 @@ def untrackF(ID):
     lines = list()
 
     members= str(ID)
-    #input("Please enter a member's name to be deleted.")
+    #members = input("Please enter a member's name to be deleted.")
     print("\n")
     print(members)
     print("\n")
@@ -120,7 +120,7 @@ def trackprice(url,count):
 
     print(current_price)
 
-    ddf = pd.read_csv('E-commerce-Price-Tracking-and-Prediction\product_data.csv')
+    ddf = pd.read_csv('product_data.csv')
 
     
     if count < len(ddf):
@@ -165,7 +165,7 @@ def clear(product_data):
 
 #clear(data_csv)
 
-# url = input("Paste your URL: ")
+#url = input("Paste your URL: ")
 
 # datas.update({'URL':url})
 
@@ -175,3 +175,4 @@ def clear(product_data):
 
 #flip_list()
 
+#untrackF()
