@@ -58,7 +58,16 @@ def flip_list():
             product_price.append(row['price'])
         
         return product_name,product_price,product_url
-    
+
+def flipsize():
+    with open(data_csv) as cs:
+        readit = csv.DictReader(cs)
+        size = []
+        for i in readit:
+            size.append(i['product'])
+    list_size = len(size)
+    return list_size
+  
 def untrackF(ID):
 
     lines = list()
