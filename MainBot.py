@@ -139,7 +139,7 @@ async def untrackcmd(message: types.Message):
 #displays the available commands
 @db.message_handler(commands=['help'])
 async def helpcmd(message: types.Message):
-    await message.reply("Commands that are allowed:\n\n /fliplist => shows the list of flipkart products that are being tracked \n\n /amznlist => shows the list of amazon products that are being tracked \n\n/help => you get this message \n\n/untrackF => to untrack the products.eg:(untrackF 2) \n\n/untrackA => to untrack the Amazon products.eg:(untrackA 2)")
+    await message.reply("Commands that are allowed:\n\n /fliplist => shows the list of flipkart products that are being tracked \n\n /amznlist => shows the list of amazon products that are being tracked \n\n/help => you get this message \n\n/untrackF => to untrack the products. eg:(untrackF 2) \n\n/untrackA => to untrack the Amazon products. eg:(untrackA 2)")
 
 
 #displays the list of flipkart products that are currently being tracked
@@ -163,7 +163,7 @@ async def listcmd(message: types.Message):
         
     print(msgString)
     await message.answer("<b>Here is the list of products I'm tracking for you!!</b>"+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖"+msgString+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖",parse_mode='HTML')
-    await message.answer("<i>If you want to stop tracking a product use the command\n /untrackF (seriel number) \n\n eg.(/untrackF 2)</i>",parse_mode="HTML")
+    await message.answer("<i>If you want to stop tracking a product use the command\n /untrackF (serial number) \n\n eg.(/untrackF 2)</i>",parse_mode="HTML")
 
 
 #displays the list amazon products that are currently being tracked
@@ -188,7 +188,7 @@ async def listcmd(message: types.Message):
         
     print(msgString)
     await message.answer("<b>Here is the list of products I'm tracking for you!!</b>"+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖"+msgString+"\n\n➖➖➖➖➖➖➖➖➖➖➖➖",parse_mode='HTML')
-    await message.answer("<i>If you want to stop tracking a product use the command\n /untrackA (seriel number) \n\n eg.(/untrackA 2)</i>",parse_mode="HTML")
+    await message.answer("<i>If you want to stop tracking a product use the command\n /untrackA (serial number) \n\n eg.(/untrackA 2)</i>",parse_mode="HTML")
 
 
 #this function handles the inline-button actions 
